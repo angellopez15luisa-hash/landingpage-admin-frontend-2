@@ -18,6 +18,10 @@ const router = createRouter({
     //   component: () => import('../views/AboutView.vue'),
     // },
     {
+      path: '/',
+      redirect: { name: 'sign-in' },
+    },
+    {
       path: '/auth',
       component: () => import('@/layouts/AuthLayout.vue'),
       meta: { requiresNotAuth: true },
