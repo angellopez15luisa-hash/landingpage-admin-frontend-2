@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { GeneralSettingAction } from '@/bussiness/actions'
 import { generalSettingSchema } from '@/schemas/general-setting.schema'
@@ -17,7 +18,7 @@ const queryClient = useQueryClient()
 // VeeValidate y useQuery se encargan de sincronizar los datos mediante el resetForm.
 
 const { data: generalSetting } = useQuery({
-  queryKey: ['orderStepForm'],
+  queryKey: ['order-step-form'],
   queryFn: () => GeneralSettingAction.get(),
   retry: false,
 })
@@ -32,10 +33,23 @@ const [textSubtitleOrderStep, textSubtitleOrderStepAttrs] = defineField('textSub
 
 const { mutate, isPending } = useMutation({
   mutationFn: GeneralSettingAction.update,
-  onSuccess: async (data) => {
-    queryClient.invalidateQueries({ queryKey: ['generalSetting'] })
+  onSuccess: async (response, variables) => {
+    // 1. Obtenemos los valores actuales que el usuario envió en el formulario (variables.data)
+    const newValues = variables.data
+
+    // 2. Actualizamos la caché de TanStack Query manualmente con los nuevos datos
+    queryClient.setQueryData(['order-step-form'], (oldData: any) => {
+      return {
+        ...oldData,
+        textTitleOrderStep: newValues.textTitleOrderStep,
+        textSubtitleOrderStep: newValues.textSubtitleOrderStep,
+      }
+    })
+    // 3. Reseteamos el formulario con esos mismos valores para que VeeValidate los asuma al instante
+    resetForm({ values: newValues })
+    queryClient.invalidateQueries({ queryKey: ['order-step-form'] })
     isEditing.value = false
-    toast.success(data?.message || 'Actualizado correctamente')
+    toast.success(response?.message || 'Actualizado correctamente')
   },
   onError: (error) => {
     toast.error(error?.message || 'Ocurrió un error')
@@ -142,7 +156,7 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
         <label
           class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wider"
         >
-         TÍTULO (EJ.¿CÓMO REALIZAR TU PEDIDO?)
+          TÍTULO (EJ.¿CÓMO REALIZAR TU PEDIDO?)
         </label>
         <input
           ref="textTitleInputRef"

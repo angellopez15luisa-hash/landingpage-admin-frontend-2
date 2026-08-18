@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { GeneralSettingAction } from '@/bussiness/actions'
 import { generalSettingSchema } from '@/schemas/general-setting.schema'
@@ -32,10 +33,28 @@ const [textSubtitleCatalogItem, textSubtitleCatalogItemAttrs] = defineField('tex
 
 const { mutate, isPending } = useMutation({
   mutationFn: GeneralSettingAction.update,
-  onSuccess: async (data) => {
+  onSuccess: async (response, variables) => {
+
+     // 1. Obtenemos los valores actuales que el usuario envió en el formulario (variables.data)
+    const newValues = variables.data
+
+    // 2. Actualizamos la caché de TanStack Query manualmente con los nuevos datos
+    queryClient.setQueryData(['catalog-item'], (oldData: any) => {
+      return {
+        ...oldData,
+        textTitleCatalogItem: newValues.textTitleCatalogItem,
+        textSubtitleCatalogItem: newValues.textSubtitleCatalogItem,
+      }
+    })
+    // 3. Reseteamos el formulario con esos mismos valores para que VeeValidate los asuma al instante
+    resetForm({ values: newValues })
     queryClient.invalidateQueries({ queryKey: ['catalog-item'] })
     isEditing.value = false
-    toast.success(data?.message || 'Actualizado correctamente')
+    toast.success(response?.message || 'Actualizado correctamente')
+
+    // queryClient.invalidateQueries({ queryKey: ['catalog-item'] })
+    // isEditing.value = false
+    // toast.success(data?.message || 'Actualizado correctamente')
   },
   onError: (error) => {
     toast.error(error?.message || 'Ocurrió un error')

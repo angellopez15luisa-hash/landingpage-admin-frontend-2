@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { HeroSettingAction } from '@/bussiness/actions'
 import { heroSettingSchema } from '@/schemas/hero-setting.schema'
@@ -16,7 +17,7 @@ const queryClient = useQueryClient()
 // Estado local solo para la maqueta
 
 const { data: heroSetting } = useQuery({
-  queryKey: ['heroSetting'],
+  queryKey: ['hero-setting'],
   queryFn: () => HeroSettingAction.get(),
   retry: false,
 })
@@ -30,10 +31,19 @@ const [buttonText, buttonTextAttrs] = defineField('buttonText')
 
 const { mutate, isPending } = useMutation({
   mutationFn: HeroSettingAction.update,
-  onSuccess: async (data) => {
-    queryClient.invalidateQueries({ queryKey: ['heroSetting'] })
+  onSuccess: async (response, variables) => {
+    const newValues = variables.data
+
+    queryClient.setQueryData(['hero-setting'], (oldData: any) => {
+      return {
+        ...oldData,
+        ...newValues,
+      }
+    })
+    resetForm({ values: newValues })
+    queryClient.invalidateQueries({ queryKey: ['hero-setting'] })
     isEditing.value = false
-    toast.success(data?.message)
+    toast.success(response?.message || 'Actualizado correctamente')
   },
   onError: (data) => {
     toast.error(data.message)

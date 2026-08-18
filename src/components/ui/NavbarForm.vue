@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { NavbarAction } from '@/bussiness/actions'
@@ -32,10 +33,22 @@ const [hrefBtn, hrefBtnAttrs] = defineField('hrefBtn')
 
 const { mutate, isPending } = useMutation({
   mutationFn: NavbarAction.update,
-  onSuccess: async (data) => {
+  onSuccess: async (response, variables) => {
+    const newValues = variables.data
+    queryClient.setQueryData(['navbar'], (oldData: any) => {
+      return {
+        ...oldData,
+        ...newValues,
+      }
+    })
+    resetForm({ values: newValues })
     queryClient.invalidateQueries({ queryKey: ['navbar'] })
     isEditing.value = false
-    toast.success(data?.message)
+    toast.success(response?.message || 'Actualizado correctamente')
+
+    // queryClient.invalidateQueries({ queryKey: ['navbar'] })
+    // isEditing.value = false
+    // toast.success(data?.message)
   },
   onError: (data) => {
     toast.error(data.message)
