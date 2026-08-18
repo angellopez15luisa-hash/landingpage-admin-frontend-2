@@ -3,15 +3,15 @@ import z from 'zod'
 export const orderStepSchema = z.object({
   id: z.number(),
   number: z
-    .string({ error: 'El number debe ser una cadena de texto' })
+    .string({ message: 'El number debe ser una cadena de texto' })
     .length(2, 'El number debe tener dos caracteres')
     .optional(),
   title: z
-    .string({ error: 'El title debe ser una cadena de texto' })
+    .string({ message: 'El title debe ser una cadena de texto' })
     .min(3, 'El title debe tener al menos tres caracteres')
     .optional(),
   description: z
-    .string({ error: 'La description debe ser una cadena de texto' })
+    .string({ message: 'La description debe ser una cadena de texto' })
     .min(3, 'La description debe tener al menos tres caracteres')
     .optional(),
 })

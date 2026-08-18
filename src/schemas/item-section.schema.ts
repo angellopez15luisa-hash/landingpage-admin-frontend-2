@@ -3,21 +3,21 @@ import z from 'zod'
 export const itemSectionSchema = z.object({
   id: z.number(),
   text: z
-    .string({ error: '* El text debe ser una cadena de texto' })
+    .string({ message: '* El text debe ser una cadena de texto' })
     .min(3, '* El text debe tener al menos tres caracteres')
     .optional(),
   href: z
-    .string({ error: 'El href debe ser una cadena de texto' })
+    .string({ message: 'El href debe ser una cadena de texto' })
     .min(3, '* El href debe tener al menos tres caracteres')
     .optional(),
   flagNavbar: z
     .boolean({
-      error: '* El campo flag-navbar debe ser un booleano valido',
+      message: '* El campo flag-navbar debe ser un booleano valido',
     })
     .optional(),
   flagFooter: z
     .boolean({
-      error: '* El campo flag-footer debe ser un booleano valido',
+      message: '* El campo flag-footer debe ser un booleano valido',
     })
     .optional(),
 })

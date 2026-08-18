@@ -3,17 +3,17 @@ import z from 'zod'
 export const catalogCategorySchema = z.object({
   id: z.number(),
   text: z
-    .string({ error: '* El nombre debe ser una cadena de texto' })
+    .string({ message: '* El nombre debe ser una cadena de texto' })
     .min(3, '* EL nombre debe tener al menos 3 caracteres')
     .optional(),
   isActive: z
     .boolean({
-      error: '* El campo is-active debe ser un booleano valido',
+      message: '* El campo is-active debe ser un booleano valido',
     })
     .optional(),
   isDefault: z
     .boolean({
-      error: '* El campo is-default debe ser un booleano valido',
+      message: '* El campo is-default debe ser un booleano valido',
     })
     .optional(),
 })
@@ -29,7 +29,6 @@ export const catalogCategoryResponseSchema = catalogCategorySchema
     isActive: true,
     isDefault: true,
   })
-  
 
 export const catalogCategoryDataResponseSchema = z.object({
   catalogCategory: catalogCategoryResponseSchema,

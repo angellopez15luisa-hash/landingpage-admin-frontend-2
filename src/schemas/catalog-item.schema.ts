@@ -4,18 +4,17 @@ import { catalogCategoryResponseSchema } from './catalog-category.schema'
 export const catalogItemSchema = z.object({
   id: z.number(),
   title: z
-    .string({ error: 'El title debe ser una cadena de texto' })
+    .string({ message: 'El title debe ser una cadena de texto' })
     .min(3, '* El titulo debe tener al menos tres caracteres')
     .optional(),
   catalogCategoryId: z.coerce
     .number({
-      error: '* El catalogCategoryId debe ser un numero',
+      message: '* El catalogCategoryId debe ser un numero',
     })
     .int('* El catalogCategoryId debe ser un numero entero')
     .refine((val) => val > 0, {
       message: 'Debes seleccionar una categoría',
     })
-    .positive('* El catalogCategoryId debe ser mayor a cero')
     .optional(),
   price: z
     .union([z.string(), z.number()])
@@ -34,12 +33,12 @@ export const catalogItemSchema = z.object({
     }),
   imagePath: z.string().optional(),
   badge: z
-    .string({ error: '* El badge debe ser una cadena de texto' })
+    .string({ message: '* El badge debe ser una cadena de texto' })
     .min(3, '* El badge debe tener al menos tres caracteres ')
     .optional(),
   isActive: z
     .boolean({
-      error: '* El campo is-active debe ser un booleano valido',
+      message: '* El campo is-active debe ser un booleano valido',
     })
     .optional(),
   catalogCategory: catalogCategoryResponseSchema.optional(),
@@ -59,7 +58,7 @@ export const catalogItemUpdateSchema = catalogItemSchema.pick({
   price: true,
   imagePath: true,
   badge: true,
-  isActive:true
+  isActive: true,
 })
 
 export const catalogItemResponseSchema = catalogItemSchema.pick({
