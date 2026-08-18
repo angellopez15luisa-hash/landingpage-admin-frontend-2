@@ -8,7 +8,9 @@ import { useRouter } from 'vue-router'
 
 defineEmits(['toggle-sidebar'])
 
-const isDark = ref(false)
+// Lee del localStorage al cargar; si no existe, por defecto es true (modo oscuro)
+const isDark = ref(localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : true)
+
 const isDropdownOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)
 
@@ -37,8 +39,16 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 onMounted(() => {
-  const isDarkModeActive = document.documentElement.classList.contains('dark')
-  isDark.value = isDarkModeActive
+  // Sincronizamos el DOM y el localStorage según el valor inicial al montar el header
+  const html = document.documentElement
+  if (isDark.value) {
+    html.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    html.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+  }
+
   document.addEventListener('click', handleClickOutside)
 })
 
@@ -93,16 +103,6 @@ const handleLogout = () => {
       >
         <font-awesome-icon icon="bars" class="text-lg" />
       </button>
-
-      <!-- Input de Búsqueda -->
-      <!-- <div class="relative w-full">
-        <font-awesome-icon icon="search" class="absolute left-3 top-3 text-slate-400 text-sm" />
-        <input
-          type="text"
-          placeholder="Search or jump to..."
-          class="w-full pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 dark:text-slate-200 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
-        />
-      </div> -->
     </div>
 
     <!-- Lado Derecho: Acciones (Dark Mode, Avatar & Dropdown Menu) -->

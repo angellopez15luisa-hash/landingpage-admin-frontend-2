@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const isDark = ref(true)
+// Si no existe 'theme' en localStorage, por defecto arranca en true (modo oscuro)
+const isDark = ref(localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : true)
 
 onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark')
+  if (isDark.value) {
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+  }
 })
 
 const toggleTheme = () => {
@@ -38,11 +45,6 @@ const toggleTheme = () => {
 
     <!-- Header superior derecho: Selector de Idioma (EN) y Botón de Tema (Sol / Luna) -->
     <header class="w-full p-6 flex justify-end items-center space-x-3 absolute top-0 left-0 z-20">
-      <!-- Botón de Idioma (EN) -->
-      <!-- <button class="h-9 px-3 rounded-full bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800 flex items-center justify-center text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer shadow-sm">
-        EN
-      </button> -->
-
       <!-- Botón de Tema (Sol / Luna) -->
       <button
         @click="toggleTheme"
