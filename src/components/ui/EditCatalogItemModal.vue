@@ -48,7 +48,7 @@ const { data: catalogItem } = useQuery({
 // Saber si el producto original tenía una imagen real y válida (no vacía y diferente a la por defecto)
 const hasOriginalImage = computed(() => {
   const originalPath = catalogItem.value?.imagePath
-  return originalPath && originalPath.trim() !== '' && originalPath !== defaultImageUrl.value
+  return originalPath &&  String(originalPath).trim() !== '' && originalPath !== defaultImageUrl.value
 })
 
 // 2. Traer categorías para el select
@@ -93,8 +93,8 @@ watch(
       }
 
       // Si el producto tiene un imagePath válido lo usamos, de lo contrario usamos la imagen por defecto
-      if (values.imagePath && values.imagePath.trim() !== '') {
-        imagePreview.value = values.imagePath
+      if (values.imagePath && String(values.imagePath).trim() !== '') {
+        imagePreview.value = String(values.imagePath)
       } else {
         imagePreview.value = defaultImageUrl.value
         isImageRemoved.value = true
@@ -137,7 +137,7 @@ const handleFileChange = (event: Event) => {
 const restoreOriginalImage = () => {
   selectedFile.value = null
   isImageRemoved.value = false
-  imagePreview.value = catalogItem.value?.imagePath || defaultImageUrl.value
+  imagePreview.value = String(catalogItem.value?.imagePath) || defaultImageUrl.value
   if (fileInputRef.value) fileInputRef.value.value = ''
 }
 
@@ -152,10 +152,10 @@ const onSubmit = handleSubmit((values) => {
   formatTwoDecimals()
 
   const formData = new FormData()
-  formData.append('title', values.title!)
+  formData.append('title', String(values.title))
   formData.append('catalogCategoryId', String(values.catalogCategoryId))
   formData.append('price', String(values.price))
-  formData.append('badge', values.badge || '')
+  formData.append('badge', String(values.badge))
   formData.append('isActive', String(values.isActive))
 
   if (selectedFile.value) {
