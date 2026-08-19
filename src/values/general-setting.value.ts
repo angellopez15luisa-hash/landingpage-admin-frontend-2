@@ -4,6 +4,7 @@ export class GeneralSettingValue {
   static editForm: GeneralSettingEditForm = {
     textNameCompany: '',
     textButtonNavbar: '',
+    textHrefNavbar:'',
     textButtonHeroSection: '',
     textTitleOrderStep: '',
     textSubtitleOrderStep: '',

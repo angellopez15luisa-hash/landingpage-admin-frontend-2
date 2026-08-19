@@ -14,6 +14,12 @@ export const generalSettingSchema = z.object({
       message: '* El text-button-navbar debe tener al menos tres caracteres',
     })
     .optional(),
+  textHrefNavbar: z
+    .string({ message: '* El text-href-navbar debe ser una cadena de texto' })
+    .min(3, {
+      message: '* El text-href-navbar debe tener al menos tres caracteres',
+    })
+    .optional(),
   textButtonHeroSection: z
     .string({
       message: '* El text-button-hero-section debe ser una cadena de texto',
@@ -124,6 +130,7 @@ export const generalSettingResponseSchema = generalSettingSchema.pick({
   id: true,
   textNameCompany: true,
   textButtonNavbar: true,
+  textHrefNavbar: true,
   textButtonHeroSection: true,
   textTitleOrderStep: true,
   textSubtitleOrderStep: true,

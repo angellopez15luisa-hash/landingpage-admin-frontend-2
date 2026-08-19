@@ -1,14 +1,14 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import { NavbarAction } from '@/bussiness/actions'
+import { GeneralSettingAction } from '@/bussiness/actions'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
-import { navbarSchema } from '@/schemas/navbar.schema'
-import { NavbarValue } from '@/values'
+import { GeneralSettingValue } from '@/values'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useQueryClient } from '@tanstack/vue-query'
 import { toast } from 'vue3-toastify'
+import { generalSettingSchema } from "@/schemas/general-setting.schema"
 
 const isEditing = ref(false)
 // const navbarId = ref<number>(0)
@@ -17,28 +17,30 @@ const textLogoInputRef = ref<HTMLInputElement | null>(null)
 
 const { data: navbar } = useQuery({
   queryKey: ['navbar'],
-  queryFn: () => NavbarAction.get(),
+  queryFn: () => GeneralSettingAction.get(),
   retry: false,
 })
 
 const { handleSubmit, resetForm, defineField, errors, meta } = useForm({
-  initialValues: NavbarValue.editForm,
-  validationSchema: toTypedSchema(navbarSchema),
+  initialValues: GeneralSettingValue.editForm,
+  validationSchema: toTypedSchema(generalSettingSchema),
 })
 
-const [textLogo, textLogoAttrs] = defineField('textLogo')
-const [hrefLogo, hrefLogoAttrs] = defineField('hrefLogo')
-const [textBtn, textBtnAttrs] = defineField('textBtn')
-const [hrefBtn, hrefBtnAttrs] = defineField('hrefBtn')
+const [textNameCompany, textNameCompanyAttrs] = defineField('textNameCompany')
+const [textButtonNavbar, textButtonNavbarAttrs] = defineField('textButtonNavbar')
+const [textHrefNavbar, textHrefNavbarAttrs] = defineField('textHrefNavbar')
+// const [hrefBtn, hrefBtnAttrs] = defineField('hrefBtn')
 
 const { mutate, isPending } = useMutation({
-  mutationFn: NavbarAction.update,
+  mutationFn: GeneralSettingAction.update,
   onSuccess: async (response, variables) => {
     const newValues = variables.data
     queryClient.setQueryData(['navbar'], (oldData: any) => {
       return {
         ...oldData,
-        ...newValues,
+        textNameCompany: newValues.textNameCompany,
+        textButtonNavbar: newValues.textButtonNavbar,
+        textHrefNavbar:newValues.textHrefNavbar
       }
     })
     resetForm({ values: newValues })
@@ -172,8 +174,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
         <input
           ref="textLogoInputRef"
           type="text"
-          v-model="textLogo"
-          v-bind="textLogoAttrs"
+          v-model="textNameCompany"
+          v-bind="textNameCompanyAttrs"
           :disabled="!isEditing"
           placeholder="Ej. DROP-ZONE"
           class="w-full rounded-lg px-3 py-2 text-sm transition-colors border"
@@ -183,20 +185,20 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
               : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500'
           "
         />
-        <span v-if="errors.textLogo" class="text-red-500 text-xs mt-1 block">{{
-          errors.textLogo
+        <span v-if="errors.textNameCompany" class="text-red-500 text-xs mt-1 block">{{
+          errors.textNameCompany
         }}</span>
       </div>
 
       <!-- Href Logo -->
-      <div class="hidden">
+      <!-- <div class="hidden">
         <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
           Enlace del Logo (href-logo)
         </label>
         <input
           type="text"
-          v-model="hrefLogo"
-          v-bind="hrefLogoAttrs"
+          v-model="textHrefNavbar"
+          v-bind="textHrefNavbarAttrs"
           :disabled="!isEditing"
           placeholder="Ej. / o #"
           class="w-full rounded-lg px-3 py-2 text-sm transition-colors border"
@@ -206,10 +208,10 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
               : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500'
           "
         />
-        <span v-if="errors.hrefLogo" class="text-red-500 text-xs mt-1 block">{{
-          errors.hrefLogo
+        <span v-if="errors.textHrefNavbar" class="text-red-500 text-xs mt-1 block">{{
+          errors.textHrefNavbar
         }}</span>
-      </div>
+      </div> -->
 
       <!-- Text Btn -->
       <div>
@@ -218,8 +220,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
         >
         <input
           type="text"
-          v-model="textBtn"
-          v-bind="textBtnAttrs"
+          v-model="textButtonNavbar"
+          v-bind="textButtonNavbarAttrs"
           :disabled="!isEditing"
           placeholder="Ej. Pedir"
           class="w-full rounded-lg px-3 py-2 text-sm transition-colors border"
@@ -229,8 +231,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
               : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500'
           "
         />
-        <span v-if="errors.textBtn" class="text-red-500 text-xs mt-1 block">{{
-          errors.textBtn
+        <span v-if="errors.textButtonNavbar" class="text-red-500 text-xs mt-1 block">{{
+          errors.textButtonNavbar
         }}</span>
       </div>
 
@@ -241,8 +243,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
         >
         <input
           type="text"
-          v-model="hrefBtn"
-          v-bind="hrefBtnAttrs"
+           v-model="textHrefNavbar"
+          v-bind="textHrefNavbarAttrs"
           :disabled="!isEditing"
           placeholder="Ej. #contacto"
           class="w-full rounded-lg px-3 py-2 text-sm transition-colors border"
@@ -252,8 +254,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
               : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500'
           "
         />
-        <span v-if="errors.hrefBtn" class="text-red-500 text-xs mt-1 block">{{
-          errors.hrefBtn
+        <span v-if="errors.textHrefNavbar" class="text-red-500 text-xs mt-1 block">{{
+          errors.textHrefNavbar
         }}</span>
       </div>
 
