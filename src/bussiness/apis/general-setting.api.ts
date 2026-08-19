@@ -5,8 +5,8 @@ import type {
 } from '@/types/general-setting.type'
 
 export class GeneralSettingApi {
-  static get = () => api.get<GeneralSettingDataResponse>(`/general-settings/get`)
+  static get = () => api.get<GeneralSettingDataResponse>(`/general-settings`)
 
   static update = (formData: GeneralSettingEditFormData) =>
-    api.patch(`/general-settings/update/${formData.id}`, formData.data)
+    api.patch(`/general-settings/${formData.id}`, formData.data)
 }
