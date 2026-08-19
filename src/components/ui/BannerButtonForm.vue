@@ -1,8 +1,8 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { HeroSettingAction } from '@/bussiness/actions'
-import { heroSettingSchema } from '@/schemas/hero-setting.schema'
-import { HeroSettingValue } from '@/values'
+import { GeneralSettingAction } from '@/bussiness/actions'
+import { generalSettingSchema } from "@/schemas/general-setting.schema"
+import { GeneralSettingValue } from '@/values'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
@@ -18,26 +18,26 @@ const queryClient = useQueryClient()
 
 const { data: heroSetting } = useQuery({
   queryKey: ['hero-setting'],
-  queryFn: () => HeroSettingAction.get(),
+  queryFn: () => GeneralSettingAction.get(),
   retry: false,
 })
 
 const { handleSubmit, resetForm, defineField, errors, meta } = useForm({
-  initialValues: HeroSettingValue.editForm,
-  validationSchema: toTypedSchema(heroSettingSchema),
+  initialValues: GeneralSettingValue.editForm,
+  validationSchema: toTypedSchema(generalSettingSchema),
 })
 
-const [buttonText, buttonTextAttrs] = defineField('buttonText')
+const [textButtonHeroSection, textButtonHeroSectionAttrs] = defineField('textButtonHeroSection')
 
 const { mutate, isPending } = useMutation({
-  mutationFn: HeroSettingAction.update,
+  mutationFn: GeneralSettingAction.update,
   onSuccess: async (response, variables) => {
     const newValues = variables.data
 
     queryClient.setQueryData(['hero-setting'], (oldData: any) => {
       return {
         ...oldData,
-        ...newValues,
+        textButtonHeroSection:newValues.textButtonHeroSection,
       }
     })
     resetForm({ values: newValues })
@@ -168,8 +168,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
           <input
             ref="textBtnInputRef"
             type="text"
-            v-model="buttonText"
-            v-bind="buttonTextAttrs"
+            v-model="textButtonHeroSection"
+            v-bind="textButtonHeroSectionAttrs"
             :disabled="!isEditing"
             placeholder="VER DROP DE LA SEMANA"
             class="w-full rounded-lg px-3 py-2 text-sm transition-colors border"
@@ -179,8 +179,8 @@ const disabled = computed<boolean>(() => !isEditing.value || isPending.value || 
                 : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500'
             "
           />
-          <span v-if="errors.buttonText" class="text-red-500 text-xs mt-1 block">{{
-            errors.buttonText
+          <span v-if="errors.textButtonHeroSection" class="text-red-500 text-xs mt-1 block">{{
+            errors.textButtonHeroSection
           }}</span>
         </div>
 
