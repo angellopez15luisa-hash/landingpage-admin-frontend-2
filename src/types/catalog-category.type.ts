@@ -2,20 +2,29 @@ import type {
   catalogCategoriesDataResponseSchema,
   catalogCategoryDataResponseSchema,
   catalogCategorySchema,
+  catalogCategoryCreateSchema,
 } from '@/schemas/catalog-category.schema'
 import z from 'zod'
 
-export type CatalogCategory = z.infer<typeof catalogCategorySchema>
+export type CatalogCategory = z.input<typeof catalogCategorySchema>
 
-export type CatalogCategoryCreateForm = Pick<CatalogCategory, 'text'>
+// Es mejor inferirlo directamente del schema de creación/edición específico
+export type CatalogCategoryCreateForm = z.input<typeof catalogCategoryCreateSchema>
 
-export type CatalogCategoryEditForm = Pick<CatalogCategory, 'text' | 'isActive' | 'isDefault'>
+// Para editar, puedes crearlo con un pick del baseSchema o definir un schema específico de edición,
+// pero si te funciona bien con Pick desde CatalogCategory, déjalo así.
+// O una alternativa segura:
+export type CatalogCategoryEditForm = {
+  text?: string
+  isActive?: boolean
+  isDefault?: boolean
+}
 
 export type CatalogCategoryEditFormData = {
-  id: CatalogCategory['id']
+  id: string
   data: CatalogCategoryEditForm
 }
 
-export type CatalogCategoryDataResponse = z.infer<typeof catalogCategoryDataResponseSchema>
+export type CatalogCategoryDataResponse = z.input<typeof catalogCategoryDataResponseSchema>
 
 export type CatalogCategoriesDataResponse = z.infer<typeof catalogCategoriesDataResponseSchema>

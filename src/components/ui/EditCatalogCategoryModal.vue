@@ -3,11 +3,15 @@ import type { CatalogCategory } from '@/types/catalog-category.type'
 import { ref, watch, nextTick, computed } from 'vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { CatalogCategoryAction } from '@/bussiness/actions/catalog-category.action'
-import { useForm } from 'vee-validate'
+import { configure, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { catalogCategorySchema } from '@/schemas/catalog-category.schema'
 import { toast } from 'vue3-toastify'
 import { CatalogCategoryValue } from '@/values'
+
+configure({
+  validateOnBlur:false
+})
 
 const props = defineProps<{
   isOpen: boolean
