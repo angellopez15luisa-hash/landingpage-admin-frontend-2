@@ -2,10 +2,21 @@ import { z } from 'zod'
 
 // 1. Esquema base para poder usar .pick() sin errores
 export const catalogCategoryBaseSchema = z.object({
-  id: z.string().optional(),
-  text: z.string().optional(),
-  isActive: z.boolean().optional(),
-  isDefault: z.boolean().optional(),
+  id: z.number(),
+  text: z
+    .string({ message: '* El nombre debe ser una cadena de texto' })
+    .min(3, '* EL nombre debe tener al menos 3 caracteres')
+    .optional(),
+  isActive: z
+    .boolean({
+      message: '* El campo is-active debe ser un booleano valido',
+    })
+    .optional(),
+  isDefault: z
+    .boolean({
+      message: '* El campo is-default debe ser un booleano valido',
+    })
+    .optional(),
 })
 
 // 2. Esquema principal con la validación de isDefault / isActive
@@ -18,9 +29,9 @@ export const catalogCategorySchema = catalogCategoryBaseSchema.refine(
     return true
   },
   {
-    message: "Una categoría marcada como predeterminada no puede estar inactiva",
+    message: 'Una categoría marcada como predeterminada no puede estar inactiva',
     path: ['isActive'],
-  }
+  },
 )
 
 // 3. Schemas derivados usando el baseSchema

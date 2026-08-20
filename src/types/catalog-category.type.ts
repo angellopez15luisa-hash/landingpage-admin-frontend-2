@@ -21,10 +21,11 @@ export type CatalogCategoryEditForm = {
 }
 
 export type CatalogCategoryEditFormData = {
-  id: string
+  id: CatalogCategory['id']
   data: CatalogCategoryEditForm
 }
 
-export type CatalogCategoryDataResponse = z.input<typeof catalogCategoryDataResponseSchema>
+// Usa z.output (o z.infer) para los datos que vienen de la API
+export type CatalogCategoryDataResponse = z.output<typeof catalogCategoryDataResponseSchema>
 
-export type CatalogCategoriesDataResponse = z.infer<typeof catalogCategoriesDataResponseSchema>
+export type CatalogCategoriesDataResponse = z.output<typeof catalogCategoriesDataResponseSchema>
