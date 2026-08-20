@@ -29,7 +29,7 @@ export const catalogCategorySchema = catalogCategoryBaseSchema.refine(
     return true
   },
   {
-    message: 'Una categoría marcada como predeterminada no puede estar inactiva',
+    message: '* Una categoría marcada como predeterminada no puede estar inactiva',
     path: ['isActive'],
   },
 )

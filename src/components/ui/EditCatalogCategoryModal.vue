@@ -159,8 +159,10 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
           </div>
 
           <!-- Checkbox Predeterminado (Se oculta si originalIsDefault es true) -->
+           <!-- v-if="!originalIsDefault" -->
           <label
-            v-if="!originalIsDefault"
+
+            :disabled="!originalIsDefault"
             class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors self-start"
           >
             <input
