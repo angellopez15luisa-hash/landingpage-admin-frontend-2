@@ -162,10 +162,11 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
            <!-- v-if="!originalIsDefault" -->
           <label
 
-            :disabled="originalIsDefault"
+
             class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors self-start"
           >
             <input
+             :disabled="!originalIsDefault"
               type="checkbox"
               v-model="isDefault"
               class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
