@@ -138,7 +138,7 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
         <div class="grid gap-4" :class="originalIsDefault ? 'grid-cols-1' : 'grid-cols-2'">
           <!-- Checkbox Activo -->
           <label
-            v-if="!isDefault"
+            v-if="!originalIsDefault"
             class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
           >
             <input
