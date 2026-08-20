@@ -7,7 +7,7 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { catalogCategorySchema } from '@/schemas/catalog-category.schema'
 import { toast } from 'vue3-toastify'
-import { CatalogCategoryValue } from "@/values"
+import { CatalogCategoryValue } from '@/values'
 
 const props = defineProps<{
   isOpen: boolean
@@ -102,10 +102,18 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
       class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-xl overflow-hidden transition-all"
     >
       <!-- Header -->
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+      <div
+        class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800"
+      >
         <h3 class="text-base font-semibold text-slate-800 dark:text-white">Editar Categoría</h3>
-        <button type="button" @click="handleClose" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <button
+          type="button"
+          @click="handleClose"
+          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
         </button>
       </div>
 
@@ -113,7 +121,9 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
       <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
         <!-- Input Text -->
         <div>
-          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre de la Categoría</label>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1"
+            >Nombre de la Categoría</label
+          >
           <input
             ref="textInputRef"
             type="text"
@@ -127,7 +137,10 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
         <!-- Checkboxes Estilo Tarjeta -->
         <div class="grid gap-4" :class="originalIsDefault ? 'grid-cols-1' : 'grid-cols-2'">
           <!-- Checkbox Activo -->
-          <label class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+          <label
+            v-if="!isDefault"
+            class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+          >
             <input
               type="checkbox"
               v-model="isActive"
@@ -146,15 +159,29 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
               v-model="isDefault"
               class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
             />
-            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Predeterminado</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300"
+              >Predeterminado</span
+            >
           </label>
         </div>
       </div>
 
       <!-- Footer -->
-      <div class="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800">
-        <button type="button" @click="handleClose" class="px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">Cancelar</button>
-        <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-colors cursor-pointer disabled:opacity-40" :disabled="disabled">
+      <div
+        class="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800"
+      >
+        <button
+          type="button"
+          @click="handleClose"
+          class="px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-colors cursor-pointer disabled:opacity-40"
+          :disabled="disabled"
+        >
           {{ isPending ? 'Guardando...' : 'Guardar Cambios' }}
         </button>
       </div>
