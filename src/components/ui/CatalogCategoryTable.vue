@@ -273,7 +273,7 @@ const confirmarEliminacion = (category: CatalogCategory) => {
               <!-- Botón Eliminar -->
               <button
                 @click="confirmarEliminacion(category)"
-                :class="{ 'invisible pointer-events-none': category.isDefault }"
+                :class="{ 'invisible pointer-events-none': category.isDefault || category.id===0 }"
                 class="inline-flex items-center justify-center p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 title="Eliminar Categoría"
               >
