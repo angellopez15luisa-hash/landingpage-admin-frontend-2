@@ -140,44 +140,42 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
 
         <!-- Checkboxes Estilo Tarjeta -->
         <div class="grid grid-cols-2 gap-4">
-  <!-- Checkbox Activo -->
-  <div class="flex flex-col">
-    <label
-      class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-    >
-      <input
-        type="checkbox"
-        v-model="isActive"
-        class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
-      />
-      <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Activo</span>
-    </label>
-    <!-- Mensaje de error abajo del check de Activo -->
-    <span v-if="errors.isActive" class="text-red-500 text-xs mt-1 block">
-      {{ errors.isActive }}
-    </span>
-  </div>
+          <!-- Checkbox Activo -->
+          <div class="flex flex-col">
+            <label
+              class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
+              <input
+                type="checkbox"
+                v-model="isActive"
+                class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+              />
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Activo</span>
+            </label>
+            <!-- Mensaje de error abajo del check de Activo -->
+            <span v-if="errors.isActive" class="text-red-500 text-xs mt-1 block">
+              {{ errors.isActive }}
+            </span>
+          </div>
 
-  <!-- Checkbox Predeterminado -->
-  <div class="flex flex-col">
-    <label
-      class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-    >
-      <input
-        :disabled="originalIsDefault"
-        type="checkbox"
-        v-model="isDefault"
-        class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
-      />
-      <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Predeterminado</span>
-    </label>
-    <!-- Espaciador invisible opcional o se deja vacío para mantener simetría si en algún momento hay error aquí también -->
-  </div>
-</div>iv>
-
-
-
-
+          <!-- Checkbox Predeterminado -->
+          <div class="flex flex-col">
+            <label
+              class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
+              <input
+                :disabled="originalIsDefault"
+                type="checkbox"
+                v-model="isDefault"
+                class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300"
+                >Predeterminado</span
+              >
+            </label>
+            <!-- Espaciador invisible opcional o se deja vacío para mantener simetría si en algún momento hay error aquí también -->
+          </div>
+        </div>
 
       </div>
 
