@@ -141,9 +141,10 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
         <!-- Checkboxes Estilo Tarjeta -->
         <div class="grid grid-cols-2 gap-4">
           <!-- Checkbox Activo -->
-          <div class="flex flex-col">
+          <div class="flex flex-col" >
             <label
               class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              :class="{'invisible':props.id === 1}"
             >
               <input
                 type="checkbox"
