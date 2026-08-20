@@ -10,7 +10,7 @@ import { toast } from 'vue3-toastify'
 import { CatalogCategoryValue } from '@/values'
 
 configure({
-  validateOnBlur:false
+  validateOnBlur: false,
 })
 
 const props = defineProps<{
@@ -141,21 +141,27 @@ const disabled = computed<boolean>(() => isPending.value || !meta.value.valid)
         <!-- Checkboxes Estilo Tarjeta -->
         <div class="grid gap-4" :class="originalIsDefault ? 'grid-cols-1' : 'grid-cols-2'">
           <!-- Checkbox Activo -->
-          <label
-            class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-          >
-            <input
-              type="checkbox"
-              v-model="isActive"
-              class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
-            />
-            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Activo</span>
-          </label>
+          <div class="flex flex-col">
+            <label
+              class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
+              <input
+                type="checkbox"
+                v-model="isActive"
+                class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+              />
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Activo</span>
+            </label>
+            <!-- El mensaje de error ahora está fuera del label, abarcando el ancho de abajo -->
+            <span v-if="errors.isActive" class="text-red-500 text-xs mt-1 block">{{
+              errors.isActive
+            }}</span>
+          </div>
 
           <!-- Checkbox Predeterminado (Se oculta si originalIsDefault es true) -->
           <label
             v-if="!originalIsDefault"
-            class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            class="flex items-center gap-3 p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors self-start"
           >
             <input
               type="checkbox"
