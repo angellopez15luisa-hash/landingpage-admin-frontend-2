@@ -92,7 +92,7 @@ const { mutate, isPending } = useMutation({
 })
 
 const onSubmit = handleSubmit((values) => {
-  console.log(window.location.origin)
+ 
   mutate({ token: token.value, data: values })
 })
 
