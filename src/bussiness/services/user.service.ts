@@ -67,9 +67,10 @@ export class UserService {
 
   static forgotPassword = async (formData: UserForgotPasswordForm): Promise<MessageResponse> => {
     try {
-      formData.frontendUrl = window.location.origin
-      console.log(formData)
-      const { data } = await UserApi.forgotPassword(formData)
+      const { data } = await UserApi.forgotPassword({
+        ...formData,
+        frontendUrl: window.location.origin,
+      })
       const response = messageResponseSchema.safeParse(data)
       if (!response.success)
         throw new Error('La respuesta del servidor no tiene el formato esperado')
