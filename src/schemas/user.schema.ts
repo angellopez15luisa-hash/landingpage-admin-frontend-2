@@ -42,6 +42,7 @@ export const userSchema = z.object({
     .min(8, 'La nueva contraseña debe tener al menos 8 caracteres')
     .optional(),
   token: z.string().min(1, 'El token es obligatorio'),
+  frontendUrl:z.string().optional()
 })
 
 export const signInSchema = userSchema.pick({

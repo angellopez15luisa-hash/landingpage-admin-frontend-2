@@ -67,6 +67,8 @@ export class UserService {
 
   static forgotPassword = async (formData: UserForgotPasswordForm): Promise<MessageResponse> => {
     try {
+      formData.frontendUrl = window.location.origin
+      console.log(formData)
       const { data } = await UserApi.forgotPassword(formData)
       const response = messageResponseSchema.safeParse(data)
       if (!response.success)

@@ -25,6 +25,7 @@ export class UserValue {
 
   static forgotPassword: UserForgotPasswordForm = {
     email: '',
+    frontendUrl:''
   }
 
   static resetPasswordForm: UserResetPasswordForm = {

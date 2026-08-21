@@ -16,7 +16,7 @@ export type UserUpdatePasswordFormData = Pick<User, 'currentPassword' | 'newPass
 
 export type UserUpdatePasswordForm = z.infer<typeof userUpdatePasswordSchema>
 
-export type UserForgotPasswordForm = Pick<User, 'email'>
+export type UserForgotPasswordForm = Pick<User, 'email'|'frontendUrl'>
 
 export type UserProfile = z.infer<typeof userGetProfileResponseSchema>
 

@@ -37,8 +37,7 @@ const { mutate, isPending } = useMutation({
 
 // Conectamos el submit con la mutación de TanStack Query pasando el valor del email
 const onSubmit = handleSubmit((values) => {
-   console.log(window.location.origin)
-  mutate(values)
+   mutate(values)
 })
 
 onMounted(() => {
