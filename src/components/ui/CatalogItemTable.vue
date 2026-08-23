@@ -9,8 +9,8 @@ import type { CatalogItem } from '@/types/catalog-item.type.ts'
 import { toast } from 'vue3-toastify'
 import Swal from 'sweetalert2'
 import AppSpinner from './AppSpinner.vue'
-import CreateCatalogItemModal from "./CreateCatalogItemModal.vue"
-import EditCatalogItemModal from "./EditCatalogItemModal.vue"
+import CreateCatalogItemModal from './CreateCatalogItemModal.vue'
+import EditCatalogItemModal from './EditCatalogItemModal.vue'
 
 const queryClient = useQueryClient()
 
@@ -114,6 +114,45 @@ const confirmarEliminacion = (product: CatalogItem) => {
     }
   })
 }
+
+const displayedPages = computed(() => {
+  const total = totalPaginas.value
+  const current = paginaActual.value
+  const delta = 2 // Vecinas a mostrar a los lados de la actual
+  const range: (number | string)[] = []
+  const rangeWithDots: (number | string)[] = []
+  let l: number | undefined = undefined
+
+  range.push(1)
+
+  for (let i = current - delta; i <= current + delta; i++) {
+    if (i < total && i > 1) {
+      range.push(i)
+    }
+  }
+
+  if (total > 1) {
+    range.push(total)
+  }
+
+  for (const i of range) {
+    if (l !== undefined) {
+      if (typeof i === 'number' && typeof l === 'number') {
+        if (i - l === 2) {
+          rangeWithDots.push(l + 1)
+        } else if (i - l > 2) {
+          rangeWithDots.push('...')
+        }
+      }
+    }
+    rangeWithDots.push(i)
+    if (typeof i === 'number') {
+      l = i
+    }
+  }
+
+  return rangeWithDots
+})
 </script>
 
 <template>
@@ -352,38 +391,7 @@ const confirmarEliminacion = (product: CatalogItem) => {
     </div>
 
     <!-- Paginación Profesional -->
-    <div
-      class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400"
-    >
-      <div class="flex items-center gap-3">
-        <span>
-          Showing
-          <span class="font-semibold text-slate-700 dark:text-slate-200">
-            {{ totalRegistros > 0 ? (paginaActual - 1) * porPagina + 1 : 0 }}
-          </span>
-          -
-          <span class="font-semibold text-slate-700 dark:text-slate-200">
-            {{ Math.min(paginaActual * porPagina, totalRegistros) }}
-          </span>
-          of
-          <span class="font-semibold text-slate-700 dark:text-slate-200">{{ totalRegistros }}</span>
-        </span>
-
-        <div class="flex items-center gap-1.5 ml-4">
-          <span>Rows</span>
-          <select
-            v-model.number="porPagina"
-            @change="paginaActual = 1"
-            class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 focus:outline-none focus:border-emerald-500 cursor-pointer"
-          >
-            <option :value="5">5</option>
-            <option :value="8">8</option>
-            <option :value="10">10</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Navegación por Números de Página -->
+ <!-- Navegación por Números de Página con Puntos Suspensivos -->
       <div class="flex items-center gap-1">
         <button
           @click="cambiarPagina(paginaActual - 1)"
@@ -393,19 +401,29 @@ const confirmarEliminacion = (product: CatalogItem) => {
           &lt;
         </button>
 
-        <button
-          v-for="num in totalPaginas"
-          :key="num"
-          @click="cambiarPagina(num)"
-          :class="
-            paginaActual === num
-              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-400 font-semibold border-emerald-300 dark:border-emerald-700'
-              : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
-          "
-          class="w-8 h-8 flex items-center justify-center rounded-lg border text-xs font-medium transition-colors cursor-pointer"
-        >
-          {{ num }}
-        </button>
+        <template v-for="(page, index) in displayedPages" :key="index">
+          <!-- Botón de número de página -->
+          <button
+            v-if="page !== '...'"
+            @click="cambiarPagina(Number(page))"
+            :class="
+              paginaActual === page
+                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-400 font-semibold border-emerald-300 dark:border-emerald-700'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+            "
+            class="w-8 h-8 flex items-center justify-center rounded-lg border text-xs font-medium transition-colors cursor-pointer"
+          >
+            {{ page }}
+          </button>
+
+          <!-- Puntos suspensivos -->
+          <span
+            v-else
+            class="w-8 h-8 flex items-center justify-center text-xs text-slate-400 dark:text-slate-500 font-bold"
+          >
+            ...
+          </span>
+        </template>
 
         <button
           @click="cambiarPagina(paginaActual + 1)"
@@ -414,18 +432,12 @@ const confirmarEliminacion = (product: CatalogItem) => {
         >
           &gt;
         </button>
-
       </div>
-    </div>
   </div>
 
   <!-- Modal para la edición del producto -->
 
-  <EditCatalogItemModal
-    :isOpen="isModalOpen"
-    :id="selectedItem.id"
-    @close="isModalOpen = false"
-  />
+  <EditCatalogItemModal :isOpen="isModalOpen" :id="selectedItem.id" @close="isModalOpen = false" />
 
   <!-- Modal de creación -->
   <CreateCatalogItemModal :isOpen="isCreateModalOpen" @close="isCreateModalOpen = false" />
