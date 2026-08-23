@@ -82,6 +82,11 @@ const router = createRouter({
           name: 'profile',
           component: () => import('@/views/ProfileView.vue'),
         },
+        {
+          path: 'review-opinion',
+          name: 'review-opinion',
+          component: () => import('@/views/ReviewOpinion.vue'),
+        },
       ],
     },
   ],
