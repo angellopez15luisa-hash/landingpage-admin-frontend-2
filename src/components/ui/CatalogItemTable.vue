@@ -3,8 +3,6 @@ import { CatalogItemAction } from '@/bussiness/actions'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { computed, ref, watch } from 'vue'
 import type { CatalogItem } from '@/types/catalog-item.type.ts'
-// import EditCatalogProductModal from './EditCatalogProductModal.vue'
-// import CreateCatalogProductModal from './CreateCatalogProductModal.vue'
 
 import { toast } from 'vue3-toastify'
 import Swal from 'sweetalert2'
@@ -70,6 +68,11 @@ const productsPaginados = computed(() => {
 })
 
 watch(searchQuery, () => {
+  paginaActual.value = 1
+})
+
+// Cada vez que cambie la cantidad por página, regresamos a la página 1
+watch(porPagina, () => {
   paginaActual.value = 1
 })
 
@@ -168,7 +171,6 @@ const displayedPages = computed(() => {
           <h3 class="text-base font-semibold text-slate-800 dark:text-white">
             Gestión de Productos del Catálogo
           </h3>
-          <!-- Uso del componente AppSpinner reutilizable -->
           <AppSpinner v-if="isFetching" text="Cargando..." />
         </div>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -243,7 +245,6 @@ const displayedPages = computed(() => {
 
     <!-- Tabla -->
     <div class="overflow-x-auto relative">
-      <!-- Overlay de carga usando AppSpinner -->
       <div
         v-if="isFetching && products"
         class="absolute inset-0 bg-slate-900/10 dark:bg-slate-900/30 backdrop-blur-[0.5px] z-10 flex items-start justify-center pt-12 pointer-events-none"
@@ -265,7 +266,6 @@ const displayedPages = computed(() => {
             <th class="px-6 py-3.5">Precio</th>
             <th class="px-6 py-3.5">Badge</th>
             <th class="px-6 py-3.5">Estado</th>
-
             <th class="px-6 py-3.5 text-right">Acciones</th>
           </tr>
         </thead>
@@ -281,7 +281,6 @@ const displayedPages = computed(() => {
             :key="index"
             class="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors"
           >
-            <!-- Título e Imagen -->
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center gap-3">
                 <img
@@ -295,7 +294,6 @@ const displayedPages = computed(() => {
               </div>
             </td>
 
-            <!-- Categoría -->
             <td class="px-6 py-4 whitespace-nowrap">
               <span
                 class="text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md font-medium"
@@ -304,14 +302,12 @@ const displayedPages = computed(() => {
               </span>
             </td>
 
-            <!-- Precio -->
             <td
               class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 dark:text-slate-100"
             >
               ${{ product.price }}
             </td>
 
-            <!-- Badge -->
             <td class="px-6 py-4 whitespace-nowrap">
               <span
                 v-if="product.badge"
@@ -322,7 +318,6 @@ const displayedPages = computed(() => {
               <span v-else class="text-slate-300 dark:text-slate-600">—</span>
             </td>
 
-            <!-- Estado (isActive) con Spinner integrado -->
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center gap-2">
                 <span
@@ -339,9 +334,7 @@ const displayedPages = computed(() => {
               </div>
             </td>
 
-            <!-- Acciones -->
             <td class="px-6 py-4 whitespace-nowrap text-right space-x-1">
-              <!-- Botón Editar -->
               <button
                 @click="abrirModal(product)"
                 class="inline-flex items-center justify-center p-2 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
@@ -363,7 +356,6 @@ const displayedPages = computed(() => {
                 </svg>
               </button>
 
-              <!-- Botón Eliminar -->
               <button
                 @click="confirmarEliminacion(product)"
                 class="inline-flex items-center justify-center p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
@@ -390,8 +382,26 @@ const displayedPages = computed(() => {
       </table>
     </div>
 
-    <!-- Paginación Profesional -->
- <!-- Navegación por Números de Página con Puntos Suspensivos -->
+    <!-- Paginación Profesional Centrada con Select y buen espaciado abajo -->
+    <div
+      class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 my-4"
+    >
+      <!-- Selector de registros por página -->
+      <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <span>Mostrar:</span>
+        <select
+          v-model.number="porPagina"
+          class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="25">25</option>
+          <option :value="50">50</option>
+        </select>
+        <span>por página</span>
+      </div>
+
+      <!-- Navegación por Números Centrada con Puntos Suspensivos -->
       <div class="flex items-center gap-1">
         <button
           @click="cambiarPagina(paginaActual - 1)"
@@ -402,7 +412,6 @@ const displayedPages = computed(() => {
         </button>
 
         <template v-for="(page, index) in displayedPages" :key="index">
-          <!-- Botón de número de página -->
           <button
             v-if="page !== '...'"
             @click="cambiarPagina(Number(page))"
@@ -416,7 +425,6 @@ const displayedPages = computed(() => {
             {{ page }}
           </button>
 
-          <!-- Puntos suspensivos -->
           <span
             v-else
             class="w-8 h-8 flex items-center justify-center text-xs text-slate-400 dark:text-slate-500 font-bold"
@@ -433,12 +441,15 @@ const displayedPages = computed(() => {
           &gt;
         </button>
       </div>
+
+      <!-- Texto informativo opcional a la derecha (o equilibrador visual) -->
+      <div class="text-xs text-slate-500 dark:text-slate-400">
+        Pág. <span class="font-medium text-slate-700 dark:text-slate-200">{{ paginaActual }}</span> de <span class="font-medium text-slate-700 dark:text-slate-200">{{ totalPaginas }}</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Modal para la edición del producto -->
-
+  <!-- Modales -->
   <EditCatalogItemModal :isOpen="isModalOpen" :id="selectedItem.id" @close="isModalOpen = false" />
-
-  <!-- Modal de creación -->
   <CreateCatalogItemModal :isOpen="isCreateModalOpen" @close="isCreateModalOpen = false" />
 </template>
