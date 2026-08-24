@@ -29,7 +29,8 @@ import {
   faXmark,
   faBagShopping,
   faBoxesStacked,
-  faChevronRight
+  faChevronRight,
+  faChevronDown
 } from '@fortawesome/free-solid-svg-icons'
 import { faBell as faRegularBell } from '@fortawesome/free-regular-svg-icons'
 
@@ -51,7 +52,8 @@ library.add(
   faRegularBell,
   faBagShopping,
   faBoxesStacked,
-  faChevronRight
+  faChevronRight,
+  faChevronDown
 )
 
 const app = createApp(App)
