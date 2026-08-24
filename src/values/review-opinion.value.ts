@@ -11,5 +11,6 @@ export class ReviewOpinionValue {
     name: '',
     rating: 0,
     text: '',
+    isActive: false
   }
 }
