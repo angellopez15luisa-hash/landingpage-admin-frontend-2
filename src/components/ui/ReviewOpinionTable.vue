@@ -329,6 +329,8 @@ const confirmarEliminacion = (review: ReviewOpinion) => {
                 </svg>
               </button>
 
+              
+
               <!-- Botón Eliminar -->
               <button
                 @click="confirmarEliminacion(review)"
