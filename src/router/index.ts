@@ -87,6 +87,11 @@ const router = createRouter({
           name: 'review-opinion',
           component: () => import('@/views/ReviewOpinionView.vue'),
         },
+        {
+          path: 'frequently-questions',
+          name: 'frequently-questions',
+          component: () => import('@/views/FrequentlyQuestions.vue'),
+        },
       ],
     },
   ],

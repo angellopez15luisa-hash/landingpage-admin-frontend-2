@@ -141,7 +141,7 @@ const confirmarEliminacion = (review: ReviewOpinion) => {
           <h3 class="text-base font-semibold text-slate-800 dark:text-white">
             Gestión de Opiniones de la Landing Page
           </h3>
-          <AppSpinner v-if="isFetching" text="C..." />
+          <AppSpinner v-if="isFetching" text="Cargando..." />
         </div>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
           Administra las valoraciones y reseñas dejadas por los clientes.
@@ -329,7 +329,7 @@ const confirmarEliminacion = (review: ReviewOpinion) => {
                 </svg>
               </button>
 
-              
+
 
               <!-- Botón Eliminar -->
               <button
